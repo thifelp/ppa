@@ -1,33 +1,48 @@
+import seaborn as sns
+import matplotlib.pyplot as plt
 import pandas as pd
 
-#Open Doc and convert to CSV
-pd.read_excel(r'/home/thi/Dev/ppa/repository/Pasta.xlsx').to_csv('/home/thi/Dev/ppa/repository/Pasta.csv')
+data = pd.read_csv('/home/thi/Dev/ppa/repository/ppe_un.csv')
+data.dropna(inplace= True, axis= 0)
+data.info()
 
-# Read file csv
-data = pd.read_csv('/home/thi/Dev/ppa/repository/Pasta.csv')
+taxa_retencao = []
+taxa_evasao = []
+taxa_reprovacao = []
+taxa_matricula = []
+taxa_efetividade = []
+taxa_permanencia_exito = []
+taxa_saida_com_exito = []
+percentual = []
+def tb(data):
+    for tb in data.values:
+        if tb[2] == "Taxa de Reten??o":
+            taxa_retencao.append(tb[2])
+            percentual.append(tb[3])
+        elif tb[2] == "Taxa de Evas?o":
+            taxa_evasao.append(tb[2])
+            percentual.append(tb[3])
+        elif tb[2] == "Taxa de Reprova??o":
+            taxa_reprovacao.append(tb[2])
+            percentual.append(tb[3])
+        elif tb[2] == "Taxa de Matr?cula Continuada Regular":
+            taxa_matricula.append(tb[2])
+            percentual.append(tb[3])
+        elif tb[2] == "Taxa de Efetividade Acad?mica":
+            taxa_efetividade.append(tb[2])
+            percentual.append(tb[3])
+        elif tb[2] == "Taxa de Perman?ncia e ?xito":
+            taxa_permanencia_exito.append(tb[2])
+            percentual.append(tb[3])
+        elif tb[2] == "Taxa de Sa?da com ?xito":
+            taxa_saida_com_exito.append(tb[2])
+            percentual.append(tb[3])
 
-total = int(data.values[3][7])
+tb(data)
 
-arg1 = int(data.values[3][3])
-arg2 = int(data.values[2][7])
-def mutually(arg1, arg2):
-    # Regra da Adição
-    #     184 + 164 = 348
-    #     ---   ---   ---
-    #     409   409   409
-    return print("%.2f" % ((arg1 + arg2) / total))
+sns.boxplot(x = percentual)
 
-def mutuallyExclusive(arg1, arg2, arg3):
-
-    # Regra da Adição
-    #     arg1 + arg2 - arg3 = soma
-    #     ----   ----   ----   ----
-    #     total  total  total  total
-    return print("%.2f" % (((arg1 + arg2) - arg3) / total))
-
-
-print("1 - Qual a probabilidade de que o doador tenha sangue do tipo O ou tipo A?")
-mutually(arg1, arg2)
-print("2 - Qual a probabilidade de que o doador tenha sangue tipo B ou que seja Rh negativo? ")
-mutuallyExclusive(45, 65, 8)
+plt.title('Indicadores')
+plt.ylabel('Percentual das taxas')
+plt.show()
 
